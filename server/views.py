@@ -70,9 +70,23 @@ def create_question(questionnaire_id):
     if not questionnaire:
         return abort(404)
     
-    enonce = request.json['enonce']
-    question = questionnaire.add_question(enonce)
+    if not "ind_reponse" in request.json and not "propositions" in request.json:
+        if not "reponse" in request.json:
+            return abort(400)
+        enonce = request.json['enonce']
+        reponse = request.json['reponse']
+        question = questionnaire.add_question_ouverte(enonce, reponse)
 
+    else:
+        if not "ind_reponse" in request.json or not "propositions" in request.json:
+            return abort(400)
+        enonce = request.json['enonce']
+        ind_reponse = request.json['ind_reponse']
+        propositions = request.json['propositions']
+        if len(propositions) != 2:
+            return abort(400, description="Chaque question doit avoir au moins 2 propositions.")
+        question = questionnaire.add_question_ferme(enonce, propositions[0], propositions[1], ind_reponse)
+    
     db.session.add(question)
     db.session.commit()
     return jsonify({'result': question.question_to_json()}), 201
