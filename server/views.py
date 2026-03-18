@@ -108,14 +108,24 @@ def delete_question(questionnaire_id, question_num):
 
 
 
-@app.route('/quiz/api/v1.0/questionnaires/<int:questionnaire_id>', methods=['GET'])
-def get_questions(questionnaire_id):
+@app.route('/quiz/api/v1.0/questionnaires/<int:questionnaire_id>/questions/<int:question_num>', methods=['GET'])
+def get_questions(questionnaire_id, question_num):
     questionnaire = Questionnaire.get_questionnaire(questionnaire_id)
     if not questionnaire:
         return abort(404)
     
-    questions = questionnaire.get_questions()
-    if questions is None:
+    question = questionnaire.get_question(question_num)
+    if question is None:
         return abort(404)
     
-    return jsonify({'result': questions.question_to_json()}), 201
+    return jsonify({'result': question.question_to_json()}), 201
+
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error' : "Not found"}), 404)
+
+@app.errorhandler(400)
+def bad_request(error):
+    return make_response(jsonify({'error': 'Bad request'}), 400)

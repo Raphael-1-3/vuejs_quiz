@@ -37,6 +37,11 @@ class Questionnaire(db.Model):
                 return True
         return False
     
+    def get_question(self, numero):
+        for q in self.questions:
+            if q.numero == numero:
+                return q
+    
     @staticmethod
     def get_questionnaires():
         return Questionnaire.query.all()
