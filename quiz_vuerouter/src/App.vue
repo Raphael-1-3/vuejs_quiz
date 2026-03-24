@@ -7,6 +7,8 @@
     <router-link to="/about">About</router-link>
     |
     <router-link to="/questionnaire">Qestionnaire</router-link>
+    |
+    <router-link to="/client">Jouer</router-link>
   </nav>
 
   <router-view />
