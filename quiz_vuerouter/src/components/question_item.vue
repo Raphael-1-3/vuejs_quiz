@@ -13,7 +13,7 @@ export default{
     },
     methods: {
         startEdit() {
-            this.editText = this.question.text;
+        this.editText = this.question.enonce;
             this.editing = true;
         },
         saveEdit() {
@@ -31,10 +31,13 @@ export default{
     <li v-bind:class="{}">
       <div >
         <div class="checkbox flex-grow-1">
-          <div v-if="!editing">
+          <div v-if="editing">
             <input type="text" class="form-control" v-model="editText" @keyup.enter="saveEdit" @keyup.esc="editing = false"/>
             <button @click="saveEdit" class="btn btn-success btn-sm">OK</button>
             <button @click="editing = false" class="btn btn-secondary btn-sm">Annuler</button>
+          </div>
+          <div v-else>
+            {{ question.enonce }}
           </div>
         </div>
         <div class="ms-2" v-if="!editing">

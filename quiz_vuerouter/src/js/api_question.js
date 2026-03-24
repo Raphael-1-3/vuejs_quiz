@@ -73,3 +73,18 @@ export async function deleteQuestion(questionnaireId, questionNumero) {
 		throw new Error('Erreur lors de la suppression de la question');
 	}
 }
+
+export async function updateQuestion(questionnaireId, questionNumero, payload) {
+	const response = await fetch(buildQuestionUrl(questionnaireId, questionNumero), {
+		method: 'PUT',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(payload)
+	});
+
+	if (!response.ok) {
+		throw new Error('Erreur lors de la mise à jour de la question');
+	}
+
+	const data = await response.json();
+	return normalizeQuestion(data.result);
+}
