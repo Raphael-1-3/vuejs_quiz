@@ -13,7 +13,7 @@ export default{
     },
     methods: {
         startEdit() {
-            this.editText = this.questionnaire.text;
+        this.editText = this.questionnaire.name;
             this.editing = true;
         },
         saveEdit() {
@@ -35,6 +35,9 @@ export default{
             <input type="text" class="form-control" v-model="editText" @keyup.enter="saveEdit" @keyup.esc="editing = false"/>
             <button @click="saveEdit" class="btn btn-success btn-sm">OK</button>
             <button @click="editing = false" class="btn btn-secondary btn-sm">Annuler</button>
+          </div>
+          <div v-else>
+            {{ questionnaire.name }}
           </div>
         </div>
         <div class="ms-2" v-if="!editing">
