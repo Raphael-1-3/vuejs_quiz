@@ -134,7 +134,7 @@ export default {
           console.error(error);
         }
       },
-      updateQuestionText: async function (index, newText) {
+      updateQuestion: async function (index, payload) {
         if (!this.selectedQuestionnaireId) {
           return;
         }
@@ -144,10 +144,20 @@ export default {
           return;
         }
 
+        const enonce = payload?.enonce?.trim();
+        const reponse = payload?.reponse?.trim();
+
+        if (!enonce) {
+          return;
+        }
+
+        const requestPayload = { enonce };
+        if (question.reponse !== undefined && question.reponse !== null && reponse !== undefined) {
+          requestPayload.reponse = reponse;
+        }
+
         try {
-          const updatedQuestion = await updateQuestion(this.selectedQuestionnaireId, question.numero, {
-            enonce: newText
-          });
+          const updatedQuestion = await updateQuestion(this.selectedQuestionnaireId, question.numero, requestPayload);
           this.selectedQuestions[index] = updatedQuestion;
 
           const questionnaire = this.quiz.find(item => item.id === this.selectedQuestionnaireId);
@@ -207,7 +217,7 @@ export default {
             :key="question.numero"
             :question="question"
             @remove="removeQuestion(index)"
-            @update="updateQuestionText(index, $event)"
+            @update="updateQuestion(index, $event)"
           />
         </ol>
 
