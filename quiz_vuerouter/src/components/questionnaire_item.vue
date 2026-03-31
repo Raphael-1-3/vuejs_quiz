@@ -8,7 +8,7 @@ export default{
           default: false
         }
     },
-    emits: ['remove', 'update', 'play'],
+  emits: ['remove', 'update', 'edit-questions', 'play'],
     data() {
         return {
             editing: false,
@@ -26,7 +26,7 @@ export default{
                 this.$emit('update', text);
             }
             this.editing = false;
-        }
+        },
     }
 }
 
@@ -47,6 +47,7 @@ export default{
         <div class="ms-2" v-if="!editing && !readonly">
           <button @click="startEdit" class="btn btn-warning btn-sm me-1">Modifier</button>
           <button @click="$emit('remove')" class="btn btn-danger btn-sm">Supprimer</button>
+          <button @click="$emit('edit-questions', questionnaire)" class="btn btn-primary" type="button">Éditer les questions</button>
         </div>
         <div v-if="readonly">
           <button @click="$emit('play', questionnaire)" class="btn btn-primary" type="button">Jouer</button>

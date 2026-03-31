@@ -6,7 +6,7 @@ import {
   createQuestionnaire,
   deleteQuestionnaire,
   updateQuestionnaire
-} from '@/js/api';
+} from '@/js/api_questionnaire.js';
 
 export default {
 

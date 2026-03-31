@@ -121,6 +121,40 @@ def get_questions(questionnaire_id, question_num):
     return jsonify({'result': question.question_to_json()}), 201
 
 
+@app.route('/quiz/api/v1.0/questionnaires/<int:questionnaire_id>/questions/<int:question_num>', methods=['PUT'])
+def update_question(questionnaire_id, question_num):
+    if not request.json:
+        return abort(400)
+
+    questionnaire = Questionnaire.get_questionnaire(questionnaire_id)
+    if not questionnaire:
+        return abort(404)
+
+    question = questionnaire.get_question(question_num)
+    if question is None:
+        return abort(404)
+
+    if 'enonce' in request.json:
+        question.enonce = request.json['enonce']
+
+    if hasattr(question, 'reponse') and 'reponse' in request.json:
+        question.reponse = request.json['reponse']
+
+    if hasattr(question, 'proposition1') and hasattr(question, 'proposition2'):
+        if 'propositions' in request.json:
+            propositions = request.json['propositions']
+            if len(propositions) != 2:
+                return abort(400, description='Chaque question doit avoir exactement 2 propositions.')
+            question.proposition1 = propositions[0]
+            question.proposition2 = propositions[1]
+
+        if 'ind_reponse' in request.json:
+            question.ind_reponse = request.json['ind_reponse']
+
+    db.session.commit()
+    return jsonify({'result': question.question_to_json()}), 200
+
+
 
 @app.errorhandler(404)
 def not_found(error):
