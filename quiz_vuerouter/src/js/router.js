@@ -1,13 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
 import About from '@/views/about.vue'
-import questionnaire from '@/views/questionnaire.vue'
+import Login from '@/views/login.vue'
+import editQuestionnaire from '@/views/editQuestionnaire.vue'
 
 const routes = [
-  { path: '/', component: Home },
-  { path: '/about', component: About },
-  { path: '/questionnaire', component: questionnaire },
-  
+  { path: '/', name: 'Home', component: Home },
+  { path: '/about', name: 'About', component: About },
+  {
+    path: '/edit-questionnaire',
+    name: 'editQuestionnaire',
+    component: editQuestionnaire,
+    meta: { requiresAuth: true }
+  },
+  { path: '/login', name: 'Login', component: Login },
 ]
 
 const router = createRouter({
@@ -15,8 +21,10 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach(async (to, from) => {
-  if (!isAuthenticated && to.name !== 'Login') {
+router.beforeEach((to) => {
+  const isAuthenticated = Boolean(localStorage.getItem('authToken'))
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
     return { name: 'Login' }
   }
 })

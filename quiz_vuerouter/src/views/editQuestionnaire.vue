@@ -167,7 +167,9 @@ export default {
         } catch (error) {
           console.error(error);
         }
-      }
+      },
+      Deco: function(){localStorage.clear();}
+      
     },
     components : { Questionnaire_item, Question_item }
 
@@ -247,6 +249,7 @@ export default {
         </div>
       </template>
     </section>
+    <button type="button" @click="Deco"> deconnexion </button>
   </div>
 
 </template>
