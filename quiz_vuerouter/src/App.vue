@@ -6,8 +6,6 @@
     |
     <router-link to="/about">About</router-link>
     |
-    <router-link to="/questionnaire">Questionnaire</router-link>
-    |
     <router-link to="/edit-questionnaire">Edit Questionnaire</router-link>
   </nav>
 
