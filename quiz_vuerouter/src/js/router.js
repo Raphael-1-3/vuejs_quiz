@@ -3,6 +3,7 @@ import Home from '@/views/Home.vue'
 import About from '@/views/about.vue'
 import Login from '@/views/login.vue'
 import editQuestionnaire from '@/views/editQuestionnaire.vue'
+import jouer from '@/views/jouer.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -14,6 +15,7 @@ const routes = [
     meta: { requiresAuth: true }
   },
   { path: '/login', name: 'Login', component: Login },
+  { path: '/jouer', component: jouer },
 ]
 
 const router = createRouter({

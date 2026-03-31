@@ -117,7 +117,8 @@ class Question(db.Model):
     def question_to_json(self):
         return {
             "numero": self.numero,
-            "enonce": self.enonce
+            "enonce": self.enonce,
+            "type": "question"
         }
 
 
@@ -140,6 +141,7 @@ class QuestionOuverte(Question):
     def question_to_json(self):
         data = super().question_to_json()
         data['reponse'] = self.reponse
+        data['type'] = 'ouverte'
         return data
     
 
@@ -171,6 +173,7 @@ class QuestionFerme(Question):
     
     def question_to_json(self):
         data = super().question_to_json()
+        data['type'] = 'fermee'
         data['propositions'] = [self.proposition1, self.proposition2]
         data['ind_reponse'] = self.ind_reponse
         return data
