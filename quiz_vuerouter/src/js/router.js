@@ -15,4 +15,10 @@ const router = createRouter({
   routes,
 })
 
+router.beforeEach(async (to, from) => {
+  if (!isAuthenticated && to.name !== 'Login') {
+    return { name: 'Login' }
+  }
+})
+
 export default router
