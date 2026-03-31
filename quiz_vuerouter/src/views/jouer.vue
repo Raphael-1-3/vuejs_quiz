@@ -18,6 +18,8 @@ export default {
       selectedQuestionnaireId: null,
       selectedQuestionnaireName: '',
       selectedQuestions: [],
+      answers: {},
+      verificationResult: null,
     };
   },
   async mounted() {
@@ -37,8 +39,28 @@ export default {
         this.selectedQuestionnaireId = questionnaire.id;
         this.selectedQuestionnaireName = questionnaire.name;
         this.selectedQuestions = questionnaire.questions || [];
-        console.log("Questions extraites :", this.selectedQuestions);
+        this.answers = {};
+        this.verificationResult = null;
       },
+      verifQuestion() {
+        let score = 0;
+        const total = this.selectedQuestions.length;
+
+        this.selectedQuestions.forEach((question) => {
+          const answer = this.answers[question.numero];
+
+          if (question.type === 'ouverte') {
+            if (typeof answer === 'string' && answer.trim().toLowerCase() === String(question.reponse).trim().toLowerCase()) {
+              score += 1;
+            }
+          } else if (question.type === 'fermee') {
+            if (Number(answer) === Number(question.ind_reponse)) {
+              score += 1;
+            }
+          }
+        });
+        this.verificationResult = `Résultat : ${score} / ${total}`;
+      }
   },
   components : { Questionnaire_item, Question_item }
 }
@@ -57,14 +79,32 @@ export default {
       <h3 v-if="selectedQuestionnaireId">Thème choisie : {{ selectedQuestionnaireName }}</h3>
 
       <template v-if="selectedQuestionnaireId">
-        <ol>
-          <Question_item
-            v-for="(question, index) in selectedQuestions"
-            :key="question.numero"
-            :question="question"
-            readonly
-          />
-        </ol>
+        <ul>
+          <li v-for="(question, index) in selectedQuestions" :key="question.numero">
+            <Question_item :question="question" readonly />
+
+            <div v-if="question.type === 'ouverte'">
+              <input v-model="answers[question.numero]" class="form-control" type="text" placeholder="Votre réponse" />
+            </div>
+
+            <div v-else-if="question.type === 'fermee'">
+              <div v-for="(prop, idx) in question.propositions" :key="idx" class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  :name="`q-${question.numero}`"
+                  :value="idx + 1"
+                  v-model="answers[question.numero]"
+                />
+                <label class="form-check-label">{{ prop }}</label>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+        <div v-if="verificationResult" style="margin-top: .5rem;">
+          <strong>{{ verificationResult }}</strong>
+        </div>
 
         <div class="input-group" style="margin-top: 0.5rem;">
           <span class="input-group-btn">

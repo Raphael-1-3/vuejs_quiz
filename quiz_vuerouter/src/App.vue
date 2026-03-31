@@ -8,7 +8,7 @@
     |
     <router-link to="/questionnaire">Qestionnaire</router-link>
     |
-    <router-link to="/client">Jouer</router-link>
+    <router-link to="/jouer">Jouer</router-link>
   </nav>
 
   <router-view />

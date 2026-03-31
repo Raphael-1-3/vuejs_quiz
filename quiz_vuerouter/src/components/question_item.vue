@@ -17,7 +17,7 @@ export default{
     },
     methods: {
         startEdit() {
-            this.editText = this.question.text;
+            this.editText = this.question.enonce;
             this.editing = true;
         },
         saveEdit() {
@@ -40,9 +40,10 @@ export default{
             <button @click="saveEdit" class="btn btn-success btn-sm">OK</button>
             <button @click="editing = false" class="btn btn-secondary btn-sm">Annuler</button>
           </div>
-
           <div v-if="readonly">
-            <strong>{{ question.text }}</strong>
+            <p>
+              {{ question.enonce }} (Type : {{ this.question.type }})
+            </p>
           </div>
         </div>
         <div class="ms-2" v-if="!editing && !readonly">
@@ -50,9 +51,6 @@ export default{
           <button @click="$emit('remove')" class="btn btn-danger btn-sm">Supprimer</button>
         </div>
         <div v-else>
-        </div>
-        <div>
-            
         </div>
       </div>
     </li>
