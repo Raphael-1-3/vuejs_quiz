@@ -1,0 +1,5 @@
+flask
+python-dotenv
+flask_sqlalchemy
+flask-cors
+bootstrap-py
