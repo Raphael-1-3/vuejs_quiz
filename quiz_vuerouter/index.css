@@ -1,5 +1,3 @@
-/* Global styles for the Vue.js Quiz Application */
-
 body {
   font-family: Arial, sans-serif;
   background-color: #f8f9fa;
@@ -44,6 +42,41 @@ ul {
   padding: 0;
 }
 
+h2 + ul {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 0.6rem 0.2rem;
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(4px);
+  -webkit-overflow-scrolling: touch;
+}
+
+h2 + ul > li {
+  margin-bottom: 0;
+  flex: 0 0 auto;
+}
+
+h2 + ul > li .btn,
+ h2 + ul > li > div {
+  display: flex;
+  justify-content: center;
+  margin-left: 2em;
+  margin-right: 1em;
+}
+
+h2 + ul > li .btn {
+  white-space: nowrap;
+  border-radius: 6px;
+  padding: 0.45rem 0.8rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+
 li {
   margin-bottom: 10px;
 }
@@ -81,6 +114,47 @@ li {
 .error-message {
   color: red;
   margin-bottom: 10px;
+}
+
+section ul {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  margin-top: 15px;
+}
+
+section ul li {
+  border: 1px solid #e9ecef;
+  border-radius: 7px;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  background-color: #fdfdff;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.bon {
+  background-color: #d9f7cc;
+  border-color: #8fd19b;
+}
+
+.mauvais {
+  background-color: #fcd7cf;
+  border-color: #e07367;
+}
+
+section ul li:last-child {
+  margin-bottom: 0;
+}
+
+section ul li .form-check {
+  margin-top: 0.35rem;
+}
+
+section ul li input.form-control,
+section ul li .form-check-input {
+  border: 1px solid #ced4da;
 }
 
 ul {
