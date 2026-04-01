@@ -58,3 +58,19 @@ npm run dev
 Frontend : `http://localhost:5173`  
 Backend API : `http://localhost:5000`
 
+
+## notes 
+
+- state management -> store reactive 
+- input text vide / 2 fois les  meme nom/champs/reponse
+- gestion des doublons
+- implementer l'edition de question a choix multiple | 
+- faire des pages differentes pour la selection et le jeu | une "page" par question 
+- style pour les reponse correcte ou incorrect |  fond rouger/vert | afficher les reponses 
+- deplacer des affichage dans les composant item. 
+- refactorisation des vue 
+- completer le readme 
+- composant avec les questionnaires 
+- reorganisation de code 
+- release v1 main 
+
