@@ -1,5 +1,6 @@
 <script>
 import Questionnaire_item from '@/components/questionnaire_item.vue';
+import SelectedQuestionsList from '@/components/questions_list.vue';
 import Question_item from '@/components/question_item.vue';
 import {
   getQuestionnaires,
@@ -20,6 +21,8 @@ export default {
       selectedQuestions: [],
       answers: {},
       verificationResult: null,
+      questionResultsClass: {},
+      correction: {},
     };
   },
   async mounted() {
@@ -35,16 +38,19 @@ export default {
       }
     },
     openQuestionEditor(questionnaire) {
-        console.log("Questionnaire reçu :", questionnaire);
         this.selectedQuestionnaireId = questionnaire.id;
         this.selectedQuestionnaireName = questionnaire.name;
         this.selectedQuestions = questionnaire.questions || [];
         this.answers = {};
         this.verificationResult = null;
+        this.questionResultsClass = {};
+        this.correction = {};
       },
       verifQuestion() {
         let score = 0;
         const total = this.selectedQuestions.length;
+        this.questionResultsClass = {};
+        this.correction = {};
 
         this.selectedQuestions.forEach((question) => {
           const answer = this.answers[question.numero];
@@ -52,17 +58,27 @@ export default {
           if (question.type === 'ouverte') {
             if (typeof answer === 'string' && answer.trim().toLowerCase() === String(question.reponse).trim().toLowerCase()) {
               score += 1;
+              this.questionResultsClass[question.numero] = "bon";
+            } else {
+              this.questionResultsClass[question.numero] = "mauvais";
+              console.log(question.reponse);
+              this.correction[question.numero] = question.reponse;
             }
           } else if (question.type === 'fermee') {
             if (Number(answer) === Number(question.ind_reponse)) {
               score += 1;
+              this.questionResultsClass[question.numero] = "bon";
+            } else {
+              this.questionResultsClass[question.numero] = "mauvais";
+              console.log(question.propositions[question.ind_reponse - 1]);
+              this.correction[question.numero] = question.propositions[question.ind_reponse - 1];
             }
           }
         });
         this.verificationResult = `Résultat : ${score} / ${total}`;
       }
   },
-  components : { Questionnaire_item, Question_item }
+  components : { Questionnaire_item, SelectedQuestionsList, Question_item }
 }
 </script>
 
@@ -79,28 +95,13 @@ export default {
       <h3 v-if="selectedQuestionnaireId">Thème choisie : {{ selectedQuestionnaireName }}</h3>
 
       <template v-if="selectedQuestionnaireId">
-        <ul>
-          <li v-for="(question, index) in selectedQuestions" :key="question.numero">
-            <Question_item :question="question" readonly />
-
-            <div v-if="question.type === 'ouverte'">
-              <input v-model="answers[question.numero]" class="form-control" type="text" placeholder="Votre réponse" />
-            </div>
-
-            <div v-else-if="question.type === 'fermee'">
-              <div v-for="(prop, idx) in question.propositions" :key="idx" class="form-check">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  :name="`q-${question.numero}`"
-                  :value="idx + 1"
-                  v-model="answers[question.numero]"
-                />
-                <label class="form-check-label">{{ prop }}</label>
-              </div>
-            </div>
-          </li>
-        </ul>
+        <SelectedQuestionsList
+          :selectedQuestions="selectedQuestions"
+          :answers="answers"
+          :questionResultsClass="questionResultsClass"
+          :correction="correction"
+          @update:answers="answers = $event"
+        />
 
         <div v-if="verificationResult" style="margin-top: .5rem;">
           <strong>{{ verificationResult }}</strong>
