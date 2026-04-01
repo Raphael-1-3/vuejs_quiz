@@ -31,7 +31,7 @@ export default {
                 localStorage.setItem('authToken', Auten);
                 this.$router.push('/edit-questionnaire');
             }
-            else this.$outer.push('/login');
+            else this.$router.push('/login');
 			
 
 			

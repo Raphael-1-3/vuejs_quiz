@@ -108,7 +108,6 @@ export default {
 
         <div class="input-group" style="margin-top: 0.5rem;">
           <span class="input-group-btn">
-            <!-- faire la methode verifQuestion -->
             <button
               @click="verifQuestion"
               class="btn btn-primary"
@@ -119,10 +118,3 @@ export default {
       </template>
     </section>
 </template>
-
-<style>
-  ul {
-    list-style-type: none;
-  }
-</style>
-

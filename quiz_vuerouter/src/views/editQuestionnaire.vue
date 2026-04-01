@@ -168,7 +168,10 @@ export default {
           console.error(error);
         }
       },
-      Deco: function(){localStorage.clear();}
+      Deco: function(){
+        localStorage.clear();
+        this.$router.push('/login')
+      }
       
     },
     components : { Questionnaire_item, Question_item }
