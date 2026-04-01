@@ -231,8 +231,9 @@ export default {
 
 <template>
 <h1>Questionnaire</h1>
+<button type="button" @click="Deco"> deconnexion </button>
 <h2>{{ title }}</h2>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start;">
+  <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; align-items: start;">
     <section>
       <ol>
         <Questionnaire_item
@@ -274,7 +275,6 @@ export default {
           />
         </ol>
 
-        <!-- Sélection du type de question -->
         <div class="mb-3 mt-3">
           <label class="form-label fw-bold">Type de question</label>
           <div>
@@ -286,7 +286,6 @@ export default {
           </div>
         </div>
 
-        <!-- Énoncé (commun) -->
         <div class="input-group mb-2">
           <input
             v-model="newQuestionText"
@@ -296,7 +295,6 @@ export default {
           >
         </div>
 
-        <!-- Formulaire question ouverte -->
         <div v-if="questionType === 'ouverte'" class="input-group mb-2">
           <input
             v-model="newQuestionAnswer"
@@ -314,7 +312,6 @@ export default {
           </span>
         </div>
 
-        <!-- Formulaire question fermée -->
         <div v-if="questionType === 'fermee'" class="mb-2">
           <div class="input-group mb-2">
             <span class="input-group-text">Proposition 1</span>
@@ -350,7 +347,6 @@ export default {
         </div>
       </template>
     </section>
-    <button type="button" @click="Deco"> deconnexion </button>
   </div>
 
 </template>

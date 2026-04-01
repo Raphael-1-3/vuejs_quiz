@@ -91,31 +91,33 @@ export default {
     in quiz" :key="questionnaire.id" :questionnaire="questionnaire" 
     readonly @play="openQuestionEditor(questionnaire)"/>
   </ul>
-   <section>
-      <h3 v-if="selectedQuestionnaireId">Thème choisie : {{ selectedQuestionnaireName }}</h3>
+  <div class="question-edit-section">
+    <section>
+        <h3 v-if="selectedQuestionnaireId">Thème choisie : {{ selectedQuestionnaireName }}</h3>
 
-      <template v-if="selectedQuestionnaireId">
-        <SelectedQuestionsList
-          :selectedQuestions="selectedQuestions"
-          :answers="answers"
-          :questionResultsClass="questionResultsClass"
-          :correction="correction"
-          @update:answers="answers = $event"
-        />
+        <template v-if="selectedQuestionnaireId">
+          <SelectedQuestionsList
+            :selectedQuestions="selectedQuestions"
+            :answers="answers"
+            :questionResultsClass="questionResultsClass"
+            :correction="correction"
+            @update:answers="answers = $event"
+          />
 
-        <div v-if="verificationResult" style="margin-top: .5rem;">
-          <strong>{{ verificationResult }}</strong>
-        </div>
+          <div v-if="verificationResult" style="margin-top: .5rem;">
+            <strong>{{ verificationResult }}</strong>
+          </div>
 
-        <div class="input-group" style="margin-top: 0.5rem;">
-          <span class="input-group-btn">
-            <button
-              @click="verifQuestion"
-              class="btn btn-primary"
-              type="button"
-            >Valider</button>
-          </span>
-        </div>
-      </template>
-    </section>
+          <div class="input-group" style="margin-top: 0.5rem;">
+            <span class="input-group-btn">
+              <button
+                @click="verifQuestion"
+                class="btn btn-primary"
+                type="button"
+              >Valider</button>
+            </span>
+          </div>
+        </template>
+      </section>
+  </div>
 </template>

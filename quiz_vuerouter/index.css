@@ -44,9 +44,10 @@ ul {
 
 h2 + ul {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 10px;
   overflow-x: auto;
+  width: 100%;
   padding: 0.6rem 0.2rem;
   background-color: #ffffff;
   border: 1px solid #dee2e6;
@@ -54,6 +55,17 @@ h2 + ul {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(4px);
   -webkit-overflow-scrolling: touch;
+}
+
+.question-edit-section {
+  display: block;
+  width: 100%;
+  clear: both;
+  margin-top: 20px;
+}
+
+.question-edit-section section {
+  display: block;
 }
 
 h2 + ul > li {
@@ -155,6 +167,58 @@ section ul li .form-check {
 section ul li input.form-control,
 section ul li .form-check-input {
   border: 1px solid #ced4da;
+}
+
+.question-edit-section {
+  margin-top: 20px;
+  background-color: #fff;
+  border: 1px solid #d8e2f2;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+}
+
+.question-edit-section h3 {
+  margin-bottom: 12px;
+  color: #0b4f9d;
+}
+
+.question-edit-section .input-group,
+.question-edit-section .btn {
+  margin-top: 8px;
+}
+
+.checkbox {
+  background: #f4f9ff;
+  border: 1px solid #cfe3f8;
+  border-radius: 8px;
+  padding: 0.75rem;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.checkbox:hover {
+  background-color: #e9f2ff;
+  box-shadow: 0 6px 14px rgba(0, 123, 255, 0.12);
+}
+
+.checkbox .btn {
+  min-width: 80px;
+  border-radius: 4px;
+}
+
+.checkbox input.form-control {
+  background-color: #ffffff;
+  border-color: #a8c0e8;
+}
+
+.checkbox .btn-primary {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.checkbox .btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004c9f;
 }
 
 ul {

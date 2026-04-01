@@ -15,7 +15,11 @@
 	- supprimer/modifier/ajouter des questions à un questionnaire
 
 - Vue `jouer` : 
-	- a completer par nolan
+	- charger les questionnaires
+	- peut choisir un questionnaire pour y jouer
+	- peut repondre aux questions
+	- obtient un resultat en fonction de ses reponses
+	- a un affichage des reponses corrigé ou le joueur c'est trompé
 
 ### Architecture 
 ```txt
@@ -44,7 +48,7 @@ Depuis la racine du projet :
 
 ```bash
 pip install -r requirements.txt
-python -m server.commands
+flask run
 ```
 
 ### Frontend
@@ -72,5 +76,4 @@ Backend API : `http://localhost:5000`
 - completer le readme 
 - composant avec les questionnaires 
 - reorganisation de code 
-- release v1 main 
-
+- release v1 main
