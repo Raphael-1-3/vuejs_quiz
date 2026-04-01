@@ -9,6 +9,7 @@ import {
 } from '@/js/api_questionnaire';
 import {
   createOpenQuestion,
+  createClosedQuestion,
   deleteQuestion,
   updateQuestion
 } from '@/js/api_question';
@@ -24,7 +25,11 @@ export default {
       selectedQuestionnaireName: '',
       selectedQuestions: [],
       newQuestionText: '',
-      newQuestionAnswer: ''
+      newQuestionAnswer: '',
+      questionType: 'ouverte',
+      newProposition1: '',
+      newProposition2: '',
+      newIndReponse: null
     };
   },
   async mounted() {
@@ -92,17 +97,47 @@ export default {
       },
       addQuestion: async function () {
         const enonce = this.newQuestionText.trim();
-        const reponse = this.newQuestionAnswer.trim();
 
-        if (!this.selectedQuestionnaireId || !enonce || !reponse) {
+        if (!this.selectedQuestionnaireId || !enonce) {
           return;
         }
 
         try {
-          const createdQuestion = await createOpenQuestion(this.selectedQuestionnaireId, enonce, reponse);
+          let createdQuestion;
+
+          if (this.questionType === 'ouverte') {
+            const reponse = this.newQuestionAnswer.trim();
+            if (!reponse) {
+              alert('Veuillez saisir une réponse.');
+              return;
+            }
+            createdQuestion = await createOpenQuestion(this.selectedQuestionnaireId, enonce, reponse);
+          } else if (this.questionType === 'fermee') {
+            const prop1 = this.newProposition1.trim();
+            const prop2 = this.newProposition2.trim();
+
+            if (!prop1 || !prop2) {
+              alert('Veuillez remplir les 2 propositions.');
+              return;
+            }
+            if (!this.newIndReponse) {
+              alert('Veuillez sélectionner la bonne réponse.');
+              return;
+            }
+            createdQuestion = await createClosedQuestion(
+              this.selectedQuestionnaireId,
+              enonce,
+              [prop1, prop2],
+              this.newIndReponse
+            );
+          }
+
           this.selectedQuestions.push(createdQuestion);
           this.newQuestionText = '';
           this.newQuestionAnswer = '';
+          this.newProposition1 = '';
+          this.newProposition2 = '';
+          this.newIndReponse = null;
 
           const questionnaire = this.quiz.find(item => item.id === this.selectedQuestionnaireId);
           if (questionnaire) {
@@ -145,15 +180,28 @@ export default {
         }
 
         const enonce = payload?.enonce?.trim();
-        const reponse = payload?.reponse?.trim();
-
         if (!enonce) {
           return;
         }
 
         const requestPayload = { enonce };
-        if (question.reponse !== undefined && question.reponse !== null && reponse !== undefined) {
-          requestPayload.reponse = reponse;
+
+        // Question ouverte
+        if (question.reponse !== undefined && question.reponse !== null) {
+          const reponse = payload?.reponse?.trim();
+          if (reponse !== undefined) {
+            requestPayload.reponse = reponse;
+          }
+        }
+
+        // Question fermée
+        if (question.propositions) {
+          if (payload.propositions) {
+            requestPayload.propositions = payload.propositions;
+          }
+          if (payload.ind_reponse) {
+            requestPayload.ind_reponse = payload.ind_reponse;
+          }
         }
 
         try {
@@ -226,7 +274,20 @@ export default {
           />
         </ol>
 
-        <div class="input-group" style="margin-top: 0.5rem;">
+        <!-- Sélection du type de question -->
+        <div class="mb-3 mt-3">
+          <label class="form-label fw-bold">Type de question</label>
+          <div>
+            <input type="radio" id="type-ouverte" value="ouverte" v-model="questionType" class="form-check-input">
+            <label for="type-ouverte" class="form-check-label ms-1 me-3">Question ouverte</label>
+
+            <input type="radio" id="type-fermee" value="fermee" v-model="questionType" class="form-check-input">
+            <label for="type-fermee" class="form-check-label ms-1">Question fermée (QCM)</label>
+          </div>
+        </div>
+
+        <!-- Énoncé (commun) -->
+        <div class="input-group mb-2">
           <input
             v-model="newQuestionText"
             placeholder="Énoncé de la question"
@@ -234,11 +295,13 @@ export default {
             class="form-control"
           >
         </div>
-        <div class="input-group" style="margin-top: 0.5rem;">
+
+        <!-- Formulaire question ouverte -->
+        <div v-if="questionType === 'ouverte'" class="input-group mb-2">
           <input
             v-model="newQuestionAnswer"
             @keyup.enter="addQuestion"
-            placeholder="Réponse (question ouverte)"
+            placeholder="Réponse"
             type="text"
             class="form-control"
           >
@@ -247,8 +310,43 @@ export default {
               @click="addQuestion"
               class="btn btn-primary"
               type="button"
-            >Ajouter question</button>
+            >Ajouter question ouverte</button>
           </span>
+        </div>
+
+        <!-- Formulaire question fermée -->
+        <div v-if="questionType === 'fermee'" class="mb-2">
+          <div class="input-group mb-2">
+            <span class="input-group-text">Proposition 1</span>
+            <input
+              v-model="newProposition1"
+              placeholder="Première proposition"
+              type="text"
+              class="form-control"
+            />
+          </div>
+
+          <div class="input-group mb-2">
+            <span class="input-group-text">Proposition 2</span>
+            <input
+              v-model="newProposition2"
+              placeholder="Deuxième proposition"
+              type="text"
+              class="form-control"
+            />
+          </div>
+
+          <select v-model.number="newIndReponse" class="form-select mb-2">
+            <option :value="null">-- Sélectionnez la bonne réponse --</option>
+            <option :value="1">Proposition 1</option>
+            <option :value="2">Proposition 2</option>
+          </select>
+
+          <button
+            @click="addQuestion"
+            class="btn btn-primary w-100"
+            type="button"
+          >Ajouter question fermée</button>
         </div>
       </template>
     </section>
