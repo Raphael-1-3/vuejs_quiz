@@ -17,11 +17,21 @@ export default {
     questionResultsClass: {
       type: Object,
       default: () => ({})
+    },
+    correction: {
+      type: Object,
+      default: () => ({})
     }
   },
   methods: {
     getQuestionClass(numero) {
       return this.questionResultsClass[numero] || '';
+    },
+    render_correction(numero) {
+      let corr = this.correction[numero] || '';
+      if (corr != '') {
+        return "La réponse était : " + corr;
+      }
     }
   }
 };
@@ -52,6 +62,7 @@ export default {
             <label class="form-check-label">{{ prop }}</label>
             </div>
         </div>
+        <p>{{ render_correction(question.numero) }}</p>
         </li>
     </ul>
 </template>

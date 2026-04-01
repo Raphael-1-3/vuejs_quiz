@@ -22,6 +22,7 @@ export default {
       answers: {},
       verificationResult: null,
       questionResultsClass: {},
+      correction: {},
     };
   },
   async mounted() {
@@ -37,18 +38,19 @@ export default {
       }
     },
     openQuestionEditor(questionnaire) {
-        console.log("Questionnaire reçu :", questionnaire);
         this.selectedQuestionnaireId = questionnaire.id;
         this.selectedQuestionnaireName = questionnaire.name;
         this.selectedQuestions = questionnaire.questions || [];
         this.answers = {};
         this.verificationResult = null;
         this.questionResultsClass = {};
+        this.correction = {};
       },
       verifQuestion() {
         let score = 0;
         const total = this.selectedQuestions.length;
         this.questionResultsClass = {};
+        this.correction = {};
 
         this.selectedQuestions.forEach((question) => {
           const answer = this.answers[question.numero];
@@ -59,6 +61,8 @@ export default {
               this.questionResultsClass[question.numero] = "bon";
             } else {
               this.questionResultsClass[question.numero] = "mauvais";
+              console.log(question.reponse);
+              this.correction[question.numero] = question.reponse;
             }
           } else if (question.type === 'fermee') {
             if (Number(answer) === Number(question.ind_reponse)) {
@@ -66,6 +70,8 @@ export default {
               this.questionResultsClass[question.numero] = "bon";
             } else {
               this.questionResultsClass[question.numero] = "mauvais";
+              console.log(question.propositions[question.ind_reponse - 1]);
+              this.correction[question.numero] = question.propositions[question.ind_reponse - 1];
             }
           }
         });
@@ -93,6 +99,7 @@ export default {
           :selectedQuestions="selectedQuestions"
           :answers="answers"
           :questionResultsClass="questionResultsClass"
+          :correction="correction"
           @update:answers="answers = $event"
         />
 
