@@ -1,6 +1,8 @@
 # VueJS Quiz — État d'avancement
 
-
+Identifiant : nolan
+Mdp : mor
+(en cas de probleme l'idendifiant et le mdp sont en dur dans le code)
 ### Frontend (Vue 3 + Vite + Vue Router)
 - Navigation de base :
 	- `/` (Accueil)
